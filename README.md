@@ -3,7 +3,7 @@
 ## Usage
 
 ```javascript
-import { Indiebackend } from "../src";
+import { Indiebackend } from "@indiebackend/admin-adk";
 
 const admin = new Indiebackend("<your app secret>");
 
