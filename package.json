@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "prepublish": "tsc",
+    "prepare": "tsc",
     "test": "ts-node test/test.ts"
   },
   "devDependencies": {
