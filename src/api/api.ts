@@ -66,22 +66,22 @@ export interface CreateGroupDto {
 export interface Currencies {
     /**
      * Publicly-available currencies
-     * @type {object}
+     * @type {{ [key: string]: number; }}
      * @memberof Currencies
      */
-    publicCurrencies: object;
+    publicCurrencies: { [key: string]: number; };
     /**
      * Owner-accessible currencies
-     * @type {object}
+     * @type {{ [key: string]: number; }}
      * @memberof Currencies
      */
-    privateCurrencies: object;
+    privateCurrencies: { [key: string]: number; };
     /**
      * Internal currencies used by Indiebackend (battlepassXp, etc.)
-     * @type {object}
+     * @type {{ [key: string]: number; }}
      * @memberof Currencies
      */
-    internalCurrencies: object;
+    internalCurrencies: { [key: string]: number; };
 }
 /**
  * 
@@ -317,21 +317,46 @@ export interface SetGroupDataDto {
 /**
  * 
  * @export
+ * @interface StatObject
+ */
+export interface StatObject {
+    /**
+     * 
+     * @type {string}
+     * @memberof StatObject
+     */
+    name: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof StatObject
+     */
+    value: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof StatObject
+     */
+    isIncrement: boolean;
+}
+/**
+ * 
+ * @export
  * @interface Stats
  */
 export interface Stats {
     /**
      * Publicly-accessibles stats (can be seen by everyone)
-     * @type {object}
+     * @type {{ [key: string]: number; }}
      * @memberof Stats
      */
-    publicStats: object;
+    publicStats: { [key: string]: number; };
     /**
      * Private stats (can be seen only by the owner)
-     * @type {object}
+     * @type {{ [key: string]: number; }}
      * @memberof Stats
      */
-    privateStats: object;
+    privateStats: { [key: string]: number; };
     /**
      * Internal stats used by indiebackend (such as sessionStats, etc.)
      * @type {InternalStats}
@@ -346,17 +371,17 @@ export interface Stats {
  */
 export interface UpdateStatsDto {
     /**
-     * 
-     * @type {Array<string>}
+     * Publicly-available stats
+     * @type {Array<StatObject>}
      * @memberof UpdateStatsDto
      */
-    publicStats: Array<string>;
+    publicStats: Array<StatObject>;
     /**
-     * 
-     * @type {Array<string>}
+     * Publicly-available stats
+     * @type {Array<StatObject>}
      * @memberof UpdateStatsDto
      */
-    privateStats: Array<string>;
+    privateStats: Array<StatObject>;
 }
 
 /**

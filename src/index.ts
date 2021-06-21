@@ -15,6 +15,9 @@ export class Indiebackend {
 	constructor(appSecret: string) {
 		const cfg = new Configuration({
 			apiKey: appSecret,
+			basePath:
+				process.env.IDB_API_HOST ||
+				"http://admin.api.dev.indiebackend.com",
 		});
 
 		this.currencies = new CurrenciesApi(cfg);
