@@ -1,16 +1,25 @@
+import { config } from "dotenv";
+config();
+
 import { Indiebackend } from "../src";
 
 const admin = new Indiebackend(
-	"dee8e7715b59fb4a91a8ca02aed77ac234ec1122efc3d377c487457e7b05800e"
+	process.env.APP_SECRET || "",
+	process.env.APP_ID || ""
 );
 
 const profileId = "814Qgmfsx3wq2b7jMDq2";
 
 async function test() {
-	const test = await admin.stats.setStats("", {
-		privateStats: [],
-		publicStats: [],
-	});
+	await admin.messaging.initialize();
+
+	const test = admin.messaging
+		.getChannel("testChannel")
+		.on("subscribed", (data) => console.log("subscribed", data))
+		.on("message", (data) => console.log("message", data))
+		.on("subscribe_error", (err) => console.log("subscribe error", err));
+
+	test.publish("Hello world!");
 }
 
 test();

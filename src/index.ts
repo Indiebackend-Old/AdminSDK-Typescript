@@ -5,14 +5,16 @@ import {
 	FunctionsApi,
 	Configuration,
 } from "./api";
+import { MessagingApi } from "./messaging";
 
 export class Indiebackend {
 	currencies: CurrenciesApi;
 	groups: GroupsApi;
 	stats: StatsApi;
 	functions: FunctionsApi;
+	messaging: MessagingApi;
 
-	constructor(appSecret: string) {
+	constructor(appSecret: string, appId: string) {
 		const cfg = new Configuration({
 			apiKey: appSecret,
 			basePath:
@@ -24,5 +26,6 @@ export class Indiebackend {
 		this.groups = new GroupsApi(cfg);
 		this.functions = new FunctionsApi(cfg);
 		this.stats = new StatsApi(cfg);
+		this.messaging = new MessagingApi(appSecret, appId);
 	}
 }
