@@ -61,6 +61,37 @@ export interface CreateGroupDto {
 /**
  * 
  * @export
+ * @interface CreateProfileDto
+ */
+export interface CreateProfileDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateProfileDto
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateProfileDto
+     */
+    displayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateProfileDto
+     */
+    avatarUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateProfileDto
+     */
+    owner: string;
+}
+/**
+ * 
+ * @export
  * @interface Currencies
  */
 export interface Currencies {
@@ -232,6 +263,80 @@ export interface InternalStats {
      * @memberof InternalStats
      */
     sessionStats: SessionStats;
+}
+/**
+ * 
+ * @export
+ * @interface Profile
+ */
+export interface Profile {
+    /**
+     * 
+     * @type {string}
+     * @memberof Profile
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Profile
+     */
+    appId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Profile
+     */
+    owner: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Profile
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Profile
+     */
+    displayName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Profile
+     */
+    avatarUrl: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Profile
+     */
+    createdAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Profile
+     */
+    updatedAt: string;
+    /**
+     * 
+     * @type {Currencies}
+     * @memberof Profile
+     */
+    currencies: Currencies;
+}
+/**
+ * 
+ * @export
+ * @interface ProfileDeletedDto
+ */
+export interface ProfileDeletedDto {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProfileDeletedDto
+     */
+    deleted: boolean;
 }
 /**
  * 
@@ -1665,6 +1770,329 @@ export class GroupsApi extends BaseAPI {
      */
     public setGroupLeader(id: string, leader: string, options?: any) {
         return GroupsApiFp(this.configuration).setGroupLeader(id, leader, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * ProfilesApi - axios parameter creator
+ * @export
+ */
+export const ProfilesApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Create a profile. Note: Currencies, Stats, etc... are not returned by this endpoint
+         * @summary Create a profile
+         * @param {CreateProfileDto} createProfileDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createProfile: async (createProfileDto: CreateProfileDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createProfileDto' is not null or undefined
+            assertParamExists('createProfile', 'createProfileDto', createProfileDto)
+            const localVarPath = `/profiles`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication AppSecret required
+            await setApiKeyToObject(localVarHeaderParameter, "AppSecret", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createProfileDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Delete a profile owned by a player
+         * @summary Delete a profile
+         * @param {string} profileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteProfile: async (profileId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'profileId' is not null or undefined
+            assertParamExists('deleteProfile', 'profileId', profileId)
+            const localVarPath = `/profiles/{profileId}`
+                .replace(`{${"profileId"}}`, encodeURIComponent(String(profileId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication AppSecret required
+            await setApiKeyToObject(localVarHeaderParameter, "AppSecret", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Return a profile owned by a player. Note: Currencies, Stats, etc... are not returned by this endpoint
+         * @summary Get a profile
+         * @param {string} profileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProfile: async (profileId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'profileId' is not null or undefined
+            assertParamExists('getProfile', 'profileId', profileId)
+            const localVarPath = `/profiles/{profileId}`
+                .replace(`{${"profileId"}}`, encodeURIComponent(String(profileId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication AppSecret required
+            await setApiKeyToObject(localVarHeaderParameter, "AppSecret", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List all profiles owned by a player. Note: Currencies, Stats, etc... are not returned by this endpoint
+         * @summary List all profiles owned by a player
+         * @param {string} ownerId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listProfiles: async (ownerId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'ownerId' is not null or undefined
+            assertParamExists('listProfiles', 'ownerId', ownerId)
+            const localVarPath = `/profiles`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication AppSecret required
+            await setApiKeyToObject(localVarHeaderParameter, "AppSecret", configuration)
+
+            if (ownerId !== undefined) {
+                localVarQueryParameter['ownerId'] = ownerId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ProfilesApi - functional programming interface
+ * @export
+ */
+export const ProfilesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ProfilesApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Create a profile. Note: Currencies, Stats, etc... are not returned by this endpoint
+         * @summary Create a profile
+         * @param {CreateProfileDto} createProfileDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createProfile(createProfileDto: CreateProfileDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Profile>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createProfile(createProfileDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Delete a profile owned by a player
+         * @summary Delete a profile
+         * @param {string} profileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteProfile(profileId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProfileDeletedDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteProfile(profileId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Return a profile owned by a player. Note: Currencies, Stats, etc... are not returned by this endpoint
+         * @summary Get a profile
+         * @param {string} profileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProfile(profileId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Profile>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProfile(profileId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * List all profiles owned by a player. Note: Currencies, Stats, etc... are not returned by this endpoint
+         * @summary List all profiles owned by a player
+         * @param {string} ownerId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listProfiles(ownerId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Profile>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listProfiles(ownerId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ProfilesApi - factory interface
+ * @export
+ */
+export const ProfilesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ProfilesApiFp(configuration)
+    return {
+        /**
+         * Create a profile. Note: Currencies, Stats, etc... are not returned by this endpoint
+         * @summary Create a profile
+         * @param {CreateProfileDto} createProfileDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createProfile(createProfileDto: CreateProfileDto, options?: any): AxiosPromise<Profile> {
+            return localVarFp.createProfile(createProfileDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Delete a profile owned by a player
+         * @summary Delete a profile
+         * @param {string} profileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteProfile(profileId: string, options?: any): AxiosPromise<ProfileDeletedDto> {
+            return localVarFp.deleteProfile(profileId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Return a profile owned by a player. Note: Currencies, Stats, etc... are not returned by this endpoint
+         * @summary Get a profile
+         * @param {string} profileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProfile(profileId: string, options?: any): AxiosPromise<Profile> {
+            return localVarFp.getProfile(profileId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List all profiles owned by a player. Note: Currencies, Stats, etc... are not returned by this endpoint
+         * @summary List all profiles owned by a player
+         * @param {string} ownerId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listProfiles(ownerId: string, options?: any): AxiosPromise<Array<Profile>> {
+            return localVarFp.listProfiles(ownerId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ProfilesApi - object-oriented interface
+ * @export
+ * @class ProfilesApi
+ * @extends {BaseAPI}
+ */
+export class ProfilesApi extends BaseAPI {
+    /**
+     * Create a profile. Note: Currencies, Stats, etc... are not returned by this endpoint
+     * @summary Create a profile
+     * @param {CreateProfileDto} createProfileDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProfilesApi
+     */
+    public createProfile(createProfileDto: CreateProfileDto, options?: any) {
+        return ProfilesApiFp(this.configuration).createProfile(createProfileDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Delete a profile owned by a player
+     * @summary Delete a profile
+     * @param {string} profileId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProfilesApi
+     */
+    public deleteProfile(profileId: string, options?: any) {
+        return ProfilesApiFp(this.configuration).deleteProfile(profileId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Return a profile owned by a player. Note: Currencies, Stats, etc... are not returned by this endpoint
+     * @summary Get a profile
+     * @param {string} profileId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProfilesApi
+     */
+    public getProfile(profileId: string, options?: any) {
+        return ProfilesApiFp(this.configuration).getProfile(profileId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List all profiles owned by a player. Note: Currencies, Stats, etc... are not returned by this endpoint
+     * @summary List all profiles owned by a player
+     * @param {string} ownerId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProfilesApi
+     */
+    public listProfiles(ownerId: string, options?: any) {
+        return ProfilesApiFp(this.configuration).listProfiles(ownerId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -4,10 +4,12 @@ import {
 	GroupsApi,
 	FunctionsApi,
 	Configuration,
+	ProfilesApi,
 } from "./api";
 import { MessagingApi } from "./messaging";
 
 export class Indiebackend {
+	profiles: ProfilesApi;
 	currencies: CurrenciesApi;
 	groups: GroupsApi;
 	stats: StatsApi;
@@ -22,6 +24,7 @@ export class Indiebackend {
 				"http://admin.api.dev.indiebackend.com",
 		});
 
+		this.profiles = new ProfilesApi(cfg);
 		this.currencies = new CurrenciesApi(cfg);
 		this.groups = new GroupsApi(cfg);
 		this.functions = new FunctionsApi(cfg);
